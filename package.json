@@ -11,11 +11,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/tailwind": "^5.1.2",
     "@popperjs/core": "^2.11.8",
-    "@types/bootstrap": "^5.2.10",
     "astro": "^4.16.9",
-    "astro-bootstrap": "^0.7.0",
-    "bootstrap": "^5.3.3",
+    "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   }
 }
