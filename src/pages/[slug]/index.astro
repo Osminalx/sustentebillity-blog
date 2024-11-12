@@ -1,0 +1,35 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntryBySlug } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+interface PostData {
+    slug: string;
+    data: {
+        title: string;
+        summary: string;
+        img: string;
+    };
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug('posts', slug);
+
+export const getStaticPaths = async () => {
+    const posts = await getCollection('posts') as PostData[];
+    return posts.map(post => ({
+        params: { slug: post.slug },
+    }));
+};
+---
+
+<Layout title={post.data.title}>
+    <article class='max-w-3xl mx-auto p-6'>
+        <img src={post.data.img} alt={post.data.title} class='w-full h-auto rounded-lg mb-4' />
+        <h1 class='text-4xl font-bold mb-2'>{post.data.title}</h1>
+        <p class='text-gray-600 mb-6'>{post.data.summary}</p>
+        <div class='prose'>
+            {post.content}
+        </div>
+    </article>
+</Layout>
