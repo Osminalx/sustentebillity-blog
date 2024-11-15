@@ -1,6 +1,5 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import { getCollection, getEntryBySlug } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 interface PostData {
@@ -12,15 +11,20 @@ interface PostData {
     };
 }
 
-const { slug } = Astro.params;
-const post = await getEntryBySlug('posts', slug);
-
 export const getStaticPaths = async () => {
-    const posts = await getCollection('posts') as PostData[];
+    const posts = (await getCollection('posts')) as PostData[];
     return posts.map(post => ({
         params: { slug: post.slug },
     }));
 };
+
+const { slug } = Astro.params;
+
+const post = await getEntry('posts', slug);
+
+if (!post) {
+    throw new Error(`Post not found for slug: ${slug}`);
+}
 ---
 
 <Layout title={post.data.title}>
@@ -29,7 +33,7 @@ export const getStaticPaths = async () => {
         <h1 class='text-4xl font-bold mb-2'>{post.data.title}</h1>
         <p class='text-gray-600 mb-6'>{post.data.summary}</p>
         <div class='prose'>
-            {post.content}
+            {post.body}
         </div>
     </article>
 </Layout>
