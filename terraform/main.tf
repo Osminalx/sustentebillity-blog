@@ -63,6 +63,14 @@ resource "azurerm_app_service" "django_app" {
   }
 }
 
+resource "azurerm_sql_firewall_rule" "allow_azure_services" {
+  name                = "AllowAzureServices"
+  server_name         = azurerm_mssql_server.sql_server.name
+  resource_group_name = azurerm_resource_group.rg.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
 
 # Servidor SQL
 resource "azurerm_mssql_server" "sql_server" {
