@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -70,9 +71,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'blogserver.wsgi.application'
 
 
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+}
+
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+#! Cambiar a la de Azure cuando se tenga
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
