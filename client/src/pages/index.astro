@@ -21,7 +21,7 @@ const posts = (await getCollection('posts')) as PostData[];
         <section>
             <img class='h-auto max-w-full rounded-lg' src='' alt='' />
         </section>
-        <section id='carousel'>
+        <section id='carousel' class="grid grid-cols-3 gap-4  ">
             {
                 posts.map(post => (
                     <Card
