@@ -1,0 +1,14 @@
+---
+const { quote, imageUrl } = Astro.props;
+---
+
+<div class='relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden'>
+    <!-- Imagen de fondo -->
+    <img src={imageUrl} alt='Fondo con frase' class='w-full h-full object-cover filter blur-sm brightness-75' />
+    <!-- Texto encima -->
+    <div class='absolute inset-0 flex items-center justify-center'>
+        <p class='text-white text-2xl md:text-4xl lg:text-5xl font-bold text-center px-4'>
+            "{quote}"
+        </p>
+    </div>
+</div>

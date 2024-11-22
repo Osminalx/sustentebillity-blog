@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,9 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+env = environ.Env(
+    DEBUG=(bool, False)  # Valores por defecto
+)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ny6$i9&$z(*0p_1d3a_7_x0k5nx(o7p2^na4uf5ooes9vpksun"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,9 +82,7 @@ REST_FRAMEWORK = {
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-env = environ.Env(
-    DEBUG=(bool, False)  # Valores por defecto
-)
+
 
 DATABASES = {"default": env.db_url("DATABASE_URL")}
 
