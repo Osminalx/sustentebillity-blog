@@ -1,0 +1,26 @@
+---
+const currentPath = Astro.url.pathname;
+---
+
+<ul class="flex space-x-4">
+  <li>
+    <a
+        href='/'
+        class='block py-2 px-3 rounded md:border-0 md:p-0 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'
+        aria-current='page'>Home</a
+    >
+  </li>
+  <li>
+    <a
+      href="/About"
+      class={`block py-2 px-3 rounded md:border-0 md:p-0 ${
+        currentPath === '/About' 
+          ? 'bg-blue-700 text-white md:text-blue-500' 
+          : 'hover:bg-gray-700 hover:text-white md:hover:bg-transparent'
+      }`}
+      aria-current={currentPath === '/About' ? 'page' : undefined}
+    >
+      About
+    </a>
+  </li>
+</ul>
