@@ -8,3 +8,4 @@ summary: 'Conoce el hábitat natural de la Amazona Frentirrojo y los desafíos q
 El contenido del artículo va aquí, con detalles, imágenes, y cualquier otro dato relevante.
 
 ![Loro random](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg)
+![Pajaro](https://s.libertaddigital.com/2023/07/04/1920/1080/fit/blue-wire-patrick-dpa-pajaro-azul-cordon.jpg)

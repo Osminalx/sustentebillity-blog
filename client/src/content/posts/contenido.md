@@ -1,7 +1,7 @@
 ---
 title: "Amazona Frentirrojo y su hábitat"
 slug: "amazona-frentirrojo-habita"
-img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTliOrt4npZkd078uqd21kwl2het3n0eZpXsg&s"
+img: "https://live.staticflickr.com/6232/6307861216_e083d37f7b_b.jpg"
 summary: "Informacion general de la ave"
 ---
 
