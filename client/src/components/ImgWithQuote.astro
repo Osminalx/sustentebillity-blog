@@ -1,14 +1,43 @@
 ---
-const { quote, imageUrl } = Astro.props;
+interface QuoteData {
+    quote: string;
+    author: string;
+}
+
+const getRandomQuote = async () => {
+    const randomNum = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+    try {
+        const response = await fetch(`http://localhost:8000/quotes/${randomNum}/`);
+        const data = await response.json();
+        return {
+            quote: data.quote,
+            author: data.author,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            quote: 'No se pudo cargar la frase.',
+            author: 'Error',
+        };
+    }
+};
+
+const quoteData: QuoteData = await getRandomQuote();
 ---
 
 <div class='relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden'>
-    <!-- Imagen de fondo -->
-    <img src={imageUrl} alt='Fondo con frase' class='w-full h-full object-cover filter blur-sm brightness-75' />
+    <img
+        src='https://zoosantacruz.org/wp-content/uploads/2015/01/lorofrentirojo.jpg'
+        alt='Fondo con frase'
+        class='w-full h-full object-cover filter blur-sm brightness-75'
+    />
     <!-- Texto encima -->
-    <div class='absolute inset-0 flex items-center justify-center'>
+    <div class='absolute inset-0 flex flex-col items-center justify-center'>
         <p class='text-white text-2xl md:text-4xl lg:text-5xl font-bold text-center px-4'>
-            "{quote}"
+            "{quoteData.quote}"
+        </p>
+        <p class='text-white text-lg md:text-2xl lg:text-3xl italic'>
+            - {quoteData.author}
         </p>
     </div>
 </div>

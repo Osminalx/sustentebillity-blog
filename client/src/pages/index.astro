@@ -1,5 +1,6 @@
 ---
 import Card from '../components/Card.astro';
+import ImgWithQuote from '../components/ImgWithQuote.astro';
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
@@ -16,12 +17,12 @@ const posts = (await getCollection('posts')) as PostData[];
 ---
 
 <Layout title='Home'>
-    <main class='min-h-screen min-w-full flex flex-col items-center justify-center'>
+    <main class='flex flex-col items-center justify-center'>
         <h1 class='text-3xl font-semibold text-white mb-4'>Amazona Frentirroja</h1>
-        <section>
-            <img class='h-auto max-w-full rounded-lg' src='' alt='' />
+        <section class='m-5 rounded-md'>
+            <ImgWithQuote />
         </section>
-        <section id='carousel' class="grid grid-cols-3 gap-4  ">
+        <section id='carousel' class='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-2'>
             {
                 posts.map(post => (
                     <Card
