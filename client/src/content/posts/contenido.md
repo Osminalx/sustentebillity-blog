@@ -1,21 +1,18 @@
 ---
 title: "Amazona Frentirrojo y su hábitat"
 slug: "amazona-frentirrojo-habita"
+Subititulo: 'Distribución'
+sustit: 'Hábitos y Estilo de Vida'
+text: 'La amazona frentirroja (Amazona autumnalis), llamada también loro cariamarillo, c'
 img: "https://live.staticflickr.com/6232/6307861216_e083d37f7b_b.jpg"
 summary: "Informacion general de la ave"
 ---
+ <span style="font-size: 1.5em; font-weight: bold;">Geografía</span>
 
-La amazona frentirroja (Amazona autumnalis), llamada también loro cariamarillo, cachete amarillo,
-loro palencano o chojín, es una especie de ave psitaciforme de la familia Psittacidae. Esta especie
-del género Amazona, nativa de las regiones tropicales de América, está distribuida desde el este de
-México hasta el sur de Ecuador, con una población aislada en el centro de Brasil, donde habita
-bosques húmedos siempreverdes a semideciduos hasta 1100 msnm. También habita zonas semiabiertas con
-árboles aislados o pequeños sectores de bosque. Considerada como amenazada (A) por la
-NOM-059-SEMARNAT-2010 y como preocupación menor por la Lista Roja de la IUCN.
-
-Es un ave de 32–35 cm de largo, con peso de 310–480 g. El plumaje es básicamente verde, con la
-frente roja, mejillas amarillas (en ocasiones con manchas rojas). La corona es azul y ancha. Poseen
-las plumas remeras color violeta negruzco a azulado hacia distal, con parches rojos hacia fuera de
-las plumas secundarias. Los machos y hembras adultos no difieren en plumaje; los polluelos presentan
-menos amarillo en las mejillas y menos rojo en la frente. No poseen dimorfismo sexual, es decir, no
-existe una diferencia física entre el macho y la hembra.
+- **Continentes:** América del Norte, América del Sur  
+- **Subcontinentes:** Centroamérica  
+- **Países:** Belice, Colombia, Costa Rica, Guatemala, Honduras, México, Nicaragua, Panamá, Venezuela  
+- **Reinos biogeográficos:** Neártico, Neotrópico  
+- **Biomas WWF:** Pluvisilva  
+<br>
+La Amazona frentirroja habita en Norteamérica, Centroamérica y Sudamérica, especialmente desde el este de México hasta el oeste de Ecuador, y la mayoría se encuentra en Panamá. Una subespecie vive únicamente en el noroeste de Brasil, entre los ríos Negro y Alto Amazonas. Esta especie es Arborícola y vive principalmente en selvas tropicales, prefiriendo las zonas Silvestres.

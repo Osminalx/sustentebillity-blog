@@ -11,6 +11,9 @@ interface PostData {
         title: string;
         summary: string;
         img: string;
+        Subititulo: string;
+        sustit: string;
+        text: string;
     };
 }
 
@@ -100,7 +103,7 @@ const postBodyHTML = marked(post.body);
                         aria-expanded="false"
                         aria-controls="accordion-collapse-body-1"
                     >
-                        <span>Descripción</span>
+                        <span>{post.data.Subititulo}</span>
                         <svg
                             data-accordion-icon
                             class="w-4 h-4 shrink-0"
@@ -132,7 +135,7 @@ const postBodyHTML = marked(post.body);
                         aria-expanded="false"
                         aria-controls="accordion-collapse-body-2"
                     >
-                        <span>Apariencia</span>
+                        <span>{post.data.sustit}</span>
                         <svg
                             data-accordion-icon
                             class="w-4 h-4 shrink-0"
@@ -153,8 +156,7 @@ const postBodyHTML = marked(post.body);
                 <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
                     <div class="p-5 border border-green-500">
                         <p>
-                            Es un ave de 32–35 cm de largo, con peso de 310–480 g. El plumaje es básicamente verde, con la
-                            frente roja, mejillas amarillas (en ocasiones con manchas rojas).
+                            {post.data.text}
                         </p>
                     </div>
                 </div>
