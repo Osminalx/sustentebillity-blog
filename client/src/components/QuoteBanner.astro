@@ -1,31 +1,14 @@
 ---
+import getRandomQuote from '../lib/FetchRandomQuote';
 interface QuoteData {
     quote: string;
     author: string;
 }
 
-const getRandomQuote = async () => {
-    const randomNum = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-    try {
-        const response = await fetch(`http://localhost:8000/quotes/${randomNum}/`);
-        const data = await response.json();
-        return {
-            quote: data.quote,
-            author: data.author,
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            quote: 'No se pudo cargar la frase.',
-            author: 'Error',
-        };
-    }
-};
-
 const quoteData: QuoteData = await getRandomQuote();
 ---
 
-<div class='relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden'>
+<div class='relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden' id='QuoteBanner'>
     <img
         src='https://zoosantacruz.org/wp-content/uploads/2015/01/lorofrentirojo.jpg'
         alt='Fondo con frase'

@@ -1,6 +1,6 @@
 ---
 import Card from '../components/Card.astro';
-import ImgWithQuote from '../components/ImgWithQuote.astro';
+import QuoteBanner from '../components/QuoteBanner.astro';
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
@@ -20,7 +20,14 @@ const posts = (await getCollection('posts')) as PostData[];
     <main class='flex flex-col items-center justify-center'>
         <h1 class='text-3xl font-semibold text-white mb-4'>Amazona Frentirroja</h1>
         <section class='m-5 rounded-md'>
-            <ImgWithQuote />
+            <QuoteBanner server:defer>
+                <h1
+                    class='mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white'
+                    slot='fallback'
+                >
+                    Cargando...
+                </h1>
+            </QuoteBanner>
         </section>
         <section id='carousel' class='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-2'>
             {
