@@ -20,8 +20,9 @@ jobs:
             
 
             - name: Initialize Terraform
-              run: cd terrafrom
-              run: terraform init
+              run: |
+                  cd terraform
+                  terraform init
 
             - name: Apply Terraform
               id: terraform
