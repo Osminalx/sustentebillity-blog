@@ -17,3 +17,12 @@ variable "sql_admin_password" {
   type = string
   default = "Redes1"
 }
+
+variable "django_secret_key" {
+  type = string
+}
+
+variable "debug" {
+  type = bool
+  default = false
+}

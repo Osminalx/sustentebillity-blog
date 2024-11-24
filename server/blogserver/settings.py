@@ -11,23 +11,35 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(DEBUG=(bool, False))
+
+environ.Env.read_env(BASE_DIR / ".env")
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ny6$i9&$z(*0p_1d3a_7_x0k5nx(o7p2^na4uf5ooes9vpksun"
+try:
+    SECRET_KEY = env("SECRET_KEY")
+    DEBUG = env("DEBUG")
+    DATABASES = {"default": env.db_url("DATABASE_URL")}
+except environ.ImproperlyConfigured:
+    SECRET_KEY = "clave-secreta-para-desarrollo"
+    DEBUG = True
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -50,7 +62,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://frontend-domain.com",
+]
+
+# TODO Desactivar para producción
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "blogserver.urls"
 
@@ -76,15 +97,6 @@ WSGI_APPLICATION = "blogserver.wsgi.application"
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-env = environ.Env(
-    DEBUG=(bool, False)  # Valores por defecto
-)
-
-DATABASES = {"default": env.db_url("DATABASE_URL")}
 
 
 # Password validation

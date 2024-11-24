@@ -1,65 +1,110 @@
 name: Deploy Astro y Django en Azure
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.x'
-      - name: Install Dependencies
-        run: |
-          cd client
-          npm install
-      - name: Build Astro
-        run: |
-          cd client
-          npm run build
-      - name: Deploy Astro to Azure
-        uses: Azure/webapps-deploy@v2
-        with:
-          app-name: "astro-frontend"
-          slot-name: "production"
-          package: "./client/dist"  
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_FRONTEND }}
+    infrastructure:
+        name: Configure Azure Infrastructure with Terraform
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v2
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                  cli_config_credentials_token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Initialize Terraform
+              run: terraform init
+
+            - name: Apply Terraform
+              id: terraform
+              run: terraform apply -auto-approve
+
+            - name: Retrieve Terraform Outputs
+              id: get-db-url
+              run: |
+                  echo "DATABASE_URL=$(terraform output -raw database_url)" >> $GITHUB_ENV
+              # Guarda la URL de la base de datos en un secreto
+            - name: Set DATABASE_URL as GitHub Secret
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  curl -X PUT \
+                  -H "Authorization: token $GH_TOKEN" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"encrypted_value\": \"$(terraform output -raw database_url)\", \"key_id\": \"$(gh secret list | grep DATABASE_URL | awk '{print $2}')\"}" \
+                  https://api.github.com/repos/${{ github.repository }}/actions/secrets/DATABASE_URL
+
+    deploy-frontend:
+        runs-on: ubuntu-latest
+        needs: infrastructure
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '20.x'
+
+            - name: Install Dependencies
+              run: |
+                  cd client
+                  npm install
+
+            - name: Build Astro
+              run: |
+                  cd client
+                  npm run build
+
+            - name: Deploy Astro to Azure
+              uses: Azure/webapps-deploy@v2
+              with:
+                  app-name: 'astro-frontend'
+                  slot-name: 'production'
+                  package: './client/dist'
+                  publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_FRONTEND }}
 
     deploy-backend:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+        runs-on: ubuntu-latest
+        needs: infrastructure
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.12'
+            - name: Setup Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: '3.12'
 
-      - name: Install Dependencies
-        run: |
-          cd server
-          pip install -r requirements.txt
+            - name: Install Dependencies
+              run: |
+                  cd server
+                  pip install -r requirements.txt
 
-      - name: Apply Database Migrations
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          cd server
-          python manage.py migrate
-
-      - name: Deploy Django to Azure
-        uses: Azure/webapps-deploy@v2
-        with:
-          app-name: "django-backend"
-          slot-name: "production"
-          package: "./server"
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_BACKEND }}
+            - name: Crear archivo .env para Django
+              run: |
+                echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > server/.env
+                echo "DEBUG=${{ secrets.DEBUG }}" >> server/.env
+                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> server/.env
 
 
+            - name: Apply Database Migrations
+              env:
+                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+              run: |
+                  cd server
+                  python manage.py migrate
+
+            - name: Deploy Django to Azure
+              uses: Azure/webapps-deploy@v2
+              with:
+                  app-name: 'django-backend'
+                  slot-name: 'production'
+                  package: './server'
+                  publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_BACKEND }}
