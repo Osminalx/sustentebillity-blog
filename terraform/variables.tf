@@ -5,7 +5,7 @@ variable "resource_group_name" {
 
 variable "location" {
   type = string
-  default = "eastus"
+  default = "westus"
 }
 
 variable "sql_admin_username" {
@@ -15,11 +15,12 @@ variable "sql_admin_username" {
 
 variable "sql_admin_password" {
   type = string
-  default = "Redes1"
+  default = "RedesF030201"
 }
 
 variable "django_secret_key" {
   type = string
+  default = "HX8Zvl76PRxbSZ9VdyUuA7JUYBuFsAVaHr-emtZbyWWwUBdDqWoGDEKtOw3Pk5d1qYI"
 }
 
 variable "debug" {

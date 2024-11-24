@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=3.0.0"
+      version = "=3.90.0 "
     }
   }
 }
@@ -20,25 +20,26 @@ resource "azurerm_resource_group" "rg" {
 }
 
 # Plan de App Service
-resource "azurerm_app_service_plan" "app_service_plan" {
+resource "azurerm_service_plan" "app_service_plan" {
   name                = "astro-app-service-plan"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku {
-    tier = "Free"
-    size = "F1"
-  }
+  os_type             = "Linux"
+  sku_name =  "F1"
 }
 
 # App Service para Astro (Frontend)
-resource "azurerm_app_service" "web_app" {
-  name                = "astro-frontend"
+resource "azurerm_linux_web_app" "web_app" {
+  name                = "astro-sustentability-frontend"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
+  service_plan_id     = azurerm_service_plan.app_service_plan.id
 
   site_config {
-    linux_fx_version = "NODE|20-lts"
+    application_stack {
+      node_version = "20-lts"
+    }
+    always_on = false
   }
 
   app_settings = {
@@ -46,14 +47,17 @@ resource "azurerm_app_service" "web_app" {
   }
 }
 
-resource "azurerm_app_service" "django_app" {
-  name                = "django-backend"
+resource "azurerm_linux_web_app" "django_app" {
+  name                = "django-sustentability-backend"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
+  service_plan_id     = azurerm_service_plan.app_service_plan.id
 
   site_config {
-    linux_fx_version = "PYTHON|3.12" 
+    application_stack {
+      python_version = "3.12"
+    }
+    always_on = false
   }
 
   app_settings = {
