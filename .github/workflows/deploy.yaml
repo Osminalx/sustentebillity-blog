@@ -3,7 +3,7 @@ name: Deploy Astro y Django en Azure
 on:
     push:
         branches:
-            - main
+            - master 
 
 jobs:
     infrastructure:
@@ -27,18 +27,15 @@ jobs:
 
             - name: Retrieve Terraform Outputs
               id: get-db-url
-              run: |
-                  echo "DATABASE_URL=$(terraform output -raw database_url)" >> $GITHUB_ENV
+              run: echo "DATABASE_URL=$(terraform output -raw database_url)" >> $GITHUB_ENV
+
+
               # Guarda la URL de la base de datos en un secreto
-            - name: Set DATABASE_URL as GitHub Secret
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Save DATABASE_URL to GitHub Secrets
               run: |
-                  curl -X PUT \
-                  -H "Authorization: token $GH_TOKEN" \
-                  -H "Content-Type: application/json" \
-                  -d "{\"encrypted_value\": \"$(terraform output -raw database_url)\", \"key_id\": \"$(gh secret list | grep DATABASE_URL | awk '{print $2}')\"}" \
-                  https://api.github.com/repos/${{ github.repository }}/actions/secrets/DATABASE_URL
+                  gh secret set DATABASE_URL --body "$(terraform output -raw database_url)"
+
+
 
     deploy-frontend:
         runs-on: ubuntu-latest
