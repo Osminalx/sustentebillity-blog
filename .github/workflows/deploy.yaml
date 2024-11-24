@@ -18,10 +18,9 @@ jobs:
               with:
                   cli_config_credentials_token: ${{ secrets.GITHUB_TOKEN }}
             
-            - name: move to Terraform folder
-              run: cd terraform
 
             - name: Initialize Terraform
+              run: cd terrafrom
               run: terraform init
 
             - name: Apply Terraform
