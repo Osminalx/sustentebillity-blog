@@ -57,9 +57,11 @@ resource "azurerm_app_service" "django_app" {
   }
 
   app_settings = {
-    "DJANGO_SETTINGS_MODULE"   = "mi_proyecto.settings"
-    "DATABASE_URL"             = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
-    "WEBSITE_RUN_FROM_PACKAGE" = "1" 
+    "DJANGO_SETTINGS_MODULE" = "mi_proyecto.settings"
+    "DATABASE_URL"           = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
+    "SECRET_KEY"             = var.django_secret_key
+    "DEBUG"                  = var.debug
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
   }
 }
 

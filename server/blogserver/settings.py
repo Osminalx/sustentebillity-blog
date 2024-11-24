@@ -16,9 +16,7 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(
-    DEBUG=(bool,False)
-)
+env = environ.Env(DEBUG=(bool, False))
 
 environ.Env.read_env(BASE_DIR / ".env")
 
@@ -64,7 +62,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://frontend-domain.com",
+]
+
+# TODO Desactivar para producción
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "blogserver.urls"
 
