@@ -17,6 +17,9 @@ jobs:
               uses: hashicorp/setup-terraform@v2
               with:
                   cli_config_credentials_token: ${{ secrets.GITHUB_TOKEN }}
+            
+            - name: move to Terraform folder
+              run: cd terraform
 
             - name: Initialize Terraform
               run: terraform init
