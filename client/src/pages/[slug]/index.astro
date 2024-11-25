@@ -1,5 +1,4 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import BackButton from '../../components/BackButton.astro';
@@ -31,7 +30,7 @@ const postBodyHTML = marked(post.body);
 ---
 
 <Layout title='Home'>
-    <main class='min-h-screen flex items-center justify-center w-full'>
+    <main class='min-h-screen m-4 flex items-center justify-center w-full'>
         <article class='bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full relative'>
             <div class='absolute top-4 left-4'>
                 <BackButton backUrl='/' />
