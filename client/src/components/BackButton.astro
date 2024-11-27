@@ -1,0 +1,25 @@
+---
+interface Props {
+    backUrl: string;
+}
+
+const { backUrl } = Astro.props;
+---
+
+<a
+    href={backUrl}
+    class='flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition'
+>
+    <svg
+        xmlns='http://www.w3.org/2000/svg'
+        class='w-6 h-6 text-gray-700'
+        fill='none'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+    >
+        <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+        <path d='M15 6l-6 6l6 6'></path>
+    </svg>
+</a>
