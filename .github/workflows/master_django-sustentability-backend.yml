@@ -24,16 +24,25 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
+          cd server
           python -m venv venv
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          cd server
+          pip install -r requirements.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Crear archivo .env para Django
+        run: |
+              echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > server/.env
+              echo "DEBUG=False" >> server/.env
+              echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> server/.env
+      
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip release.zip ./server/* -r
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
@@ -68,7 +77,15 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_56AFA2F75C674E87825155FB5BA55D50 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E5FB7D848E3C4E2785E3FFF435FFAA09 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_08129FF7409B46A280F21EDDA0E99884 }}
-
+          
+      - name: Activate virtual environment and apply migrations
+        run: |
+          cd server
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python manage.py migrate
+    
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
