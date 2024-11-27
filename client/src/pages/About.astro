@@ -1,18 +1,96 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+import osminImage from '../assets/team/OsminMeme.jpg';
+import jesusImage from '../assets/team/JesusMeme.jpg';
+import israelImage from '../assets/team/IsraelMeme.jpg';
+import carlosImage from '../assets/team/CarlosMeme.jpg';
+
+const teamMembers = [
+  {
+    name: 'Osmin Alexander Fregoso Angel',
+    role: 'osminGod',
+    image: osminImage.src,
+  },
+  {
+    name: 'Jesus Adrian Canales Rojas',
+    role: '"soy gei"',
+    image: jesusImage.src,
+  },
+  {
+    name: 'Israel Cruz King',
+    role: 'hiisraelck',
+    image: israelImage.src,
+  },
+  {
+    name: 'Carlos Sandez Cruz',
+    role: 'mondongo',
+    image: carlosImage.src,
+  },
+];
+
+import pajaroImage from '../assets/other/Amazona_Autumnalis2.jpg'
 ---
 
-<Layout title='About Us'>
-    <main class='min-h-screen min-w-full flex flex-col items-center justify-center'>
-        <h1 class='text-3xl font-semibold text-white mb-4'>Amazona Frentirroja</h1>
-        <section>
-            <img class='h-auto max-w-full rounded-lg' src='' alt='' />
+<Layout title='About'>
+    <main class="container mx-auto px-4 py-8">
+        <section class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h2 class="text-4xl font-bold text-green-600 text-center mb-12">Sobre Nosotros</h2>
+            <div class="flex flex-col items-center">
+                <div class="mb-6">
+                  <img 
+                    src={pajaroImage.src}  
+                    class="rounded-md mb-4 w-full h-100 object-cover mx-auto" 
+                  />
+                </div>
+                <p class="mb-4 md:mb-4 md:w-2/3">
+                    En este Blog tenemos como objetivo difundir conocimiento y crear conciencia sobre la 
+                    <i>Amazona autumnalis</i>, una especie de loro conocida por su distintivo plumaje y su importante papel en los ecosistemas 
+                    tropicales. A través de artículos informativos, fotografías y análisis, buscamos ser una fuente confiable para los amantes 
+                    de la naturaleza.
+                </p>
+            </div>
         </section>
-        <section id='carousel'>
-            {
-                
-            }
+    
+        <section class="bg-white shadow-md rounded-lg p-6 mb-8">
+          <h2 class="text-2xl font-bold text-green-600 mb-4">Nuestra Misión</h2>
+          <p>
+            Promover la conservación de la <i>Amazona autumnalis</i> mediante la educación y la investigación. 
+            Nosotros creemos en la importancia de proteger a esta especie y su hábitat para garantizar 
+            su supervivencia.
+          </p>
         </section>
-        
-    </main>
+    
+        <section class="bg-white shadow-md rounded-lg p-6 mb-8">
+          <h2 class="text-2xl font-bold text-green-600 mb-4">Nuestros Valores</h2>
+          <ul class="list-disc list-inside">
+            <li>Respeto por la biodiversidad y el medio ambiente</li>
+            <li>Compromiso con la educación ambiental</li>
+            <li>Integridad en la investigación y difusión</li>
+            <li>Colaboración con comunidades locales</li>
+          </ul>
+        </section>
+    
+        <section class="bg-white shadow-md rounded-lg p-6">
+          <h2 class="text-2xl font-bold text-green-600 mb-4">Nuestro Equipo</h2>
+          <p>
+            Nuestro equipo está formado por ingenieros de software apasionados por la naturaleza, unidos por el deseo de 
+            compartir la belleza y la importancia de la <i>Amazona autumnalis</i>. Cada uno de nosotros aporta una perspectiva única 
+            para enriquecer el contenido del blog.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-4">
+            {teamMembers.map((member) => (
+              <div class="bg-gray-50 border rounded-lg shadow-sm p-4 w-full sm:w-1/3">
+                <img 
+                  src={member.image} 
+                  alt={`Foto de ${member.name}`} 
+                  class="rounded-md mb-4 w-full h-48 object-cover" 
+                />
+                <h3 class="text-lg font-bold">{member.name}</h3>
+                <p>{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
 </Layout>
