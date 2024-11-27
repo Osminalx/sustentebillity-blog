@@ -39,13 +39,13 @@ jobs:
           npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip releese.zip ./client/dist/* -r
+        run: zip -r release.zip ./client/dist
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: releese.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip releese.zip
+        run: unzip release.zip
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -78,5 +78,5 @@ jobs:
         with:
           app-name: 'astro-sustentability-frontend'
           slot-name: 'Production'
-          package: .
+          package: release.zip
           
