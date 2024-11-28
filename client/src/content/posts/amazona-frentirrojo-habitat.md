@@ -39,3 +39,20 @@ existe una diferencia física entre el macho y la hembra.
         />
     </div>
 </div>
+
+### Estilo de vida y comportamiento
+
+-   **Estilo de vida:** Arborícola, Altricial, Terrestre
+-   **Comportamiento estacional:** No migratorio
+
+### Sonido y canto
+
+**Sonido y canto:**
+
+<audio controls>
+    <source
+        src="/audio/XC597424%20-%20Red-lored%20Amazon%20-%20Amazona%20autumnalis.mp3"
+        type="audio/mpeg"
+    />
+    Tu navegador no soporta el elemento de audio.
+</audio>
