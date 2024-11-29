@@ -83,16 +83,17 @@ resource "azurerm_linux_web_app" "django_app" {
       python_version = "3.12"
     }
     always_on = false
+    
   }
 
   app_settings = {
-    "DJANGO_SETTINGS_MODULE" = "blogserver.settings"
-    "DATABASE_URL"           = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
-    "SECRET_KEY"             = var.django_secret_key
-    "DEBUG"                  = var.debug
-    "WEBSITE_RUN_FROM_PACKAGE" = "1"
-    "APPSETTING_WEBSITE_STARTUP_FILE" = "python3 ./server/manage.py runserver 0.0.0.0:8000"
-  }
+  "DJANGO_SETTINGS_MODULE" = "blogserver.settings"
+  "DATABASE_URL"           = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
+  "SECRET_KEY"             = var.django_secret_key
+  "DEBUG"                  = var.debug
+  "WEBSITE_RUN_FROM_PACKAGE" = "1"
+}
+
 }
 
 resource "azurerm_sql_firewall_rule" "allow_azure_services" {
