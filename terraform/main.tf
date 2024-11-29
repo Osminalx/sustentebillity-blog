@@ -28,6 +28,13 @@ resource "azurerm_service_plan" "app_service_plan" {
   sku_name =  "F1"
 }
 
+# Managed Identity para el Frontend
+resource "azurerm_user_assigned_identity" "frontend_identity" {
+  name                = "astro-frontend-identity"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 # App Service para Astro (Frontend)
 resource "azurerm_linux_web_app" "web_app" {
   name                = "astro-sustentability-frontend"
@@ -35,6 +42,10 @@ resource "azurerm_linux_web_app" "web_app" {
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.app_service_plan.id
 
+  identity {
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.frontend_identity.id]
+  }
   site_config {
     application_stack {
       node_version = "20-lts"
@@ -43,8 +54,17 @@ resource "azurerm_linux_web_app" "web_app" {
   }
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    "WEBSITE_RUN_FROM_PACKAGE" = "0"
+    "WEBSITE_STARTUP_FILE"     = "node dist/server/entry.mjs"
+    "PUBLIC_API_BASE_URL"      = "https://${azurerm_linux_web_app.django_app.default_hostname}"
   }
+}
+
+# Managed Identity para el Backend
+resource "azurerm_user_assigned_identity" "backend_identity" {
+  name                = "astro-backend-identity"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_linux_web_app" "django_app" {
@@ -52,6 +72,11 @@ resource "azurerm_linux_web_app" "django_app" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.app_service_plan.id
+
+  identity {
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.backend_identity.id]
+  }
 
   site_config {
     application_stack {
@@ -61,11 +86,12 @@ resource "azurerm_linux_web_app" "django_app" {
   }
 
   app_settings = {
-    "DJANGO_SETTINGS_MODULE" = "mi_proyecto.settings"
+    "DJANGO_SETTINGS_MODULE" = "blogserver.settings"
     "DATABASE_URL"           = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
     "SECRET_KEY"             = var.django_secret_key
     "DEBUG"                  = var.debug
     "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    "APPSETTING_WEBSITE_STARTUP_FILE" = "python3 ./server/manage.py runserver 0.0.0.0:8000"
   }
 }
 
