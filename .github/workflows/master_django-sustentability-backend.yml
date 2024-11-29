@@ -24,16 +24,25 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
+          cd server
           python -m venv venv
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          cd server
+          pip install -r requirements.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Crear archivo .env para Django
+        run: |
+              echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > server/.env
+              echo "DEBUG=False" >> server/.env
+              echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> server/.env
+      
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip release.zip ./server/* -r
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
@@ -42,6 +51,7 @@ jobs:
           path: |
             release.zip
             !venv/
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -69,10 +79,23 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5E016EB47752429C832D58F6A98CEE1D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6E30F6AEF56D49AAA9ECD32F1D34BF1C }}
 
+      - name: Activate virtual environment and apply migrations
+        run: |
+                cd server
+                python -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+                python manage.py migrate
+  
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'django-sustentability-backend'
           slot-name: 'Production'
+          run: |
+                cd server
+                python -m venv venv
+                source venv/bin/activate
+                python manage.py runserver 0.0.0.0:8000
           
