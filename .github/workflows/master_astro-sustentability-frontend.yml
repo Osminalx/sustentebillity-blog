@@ -21,25 +21,14 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Update npm to latest version
-        run: |
-          cd client
-          npm install -g npm@latest
-          
-      - name: Cleanup node_modules and package-lock.json
-        run: |
-          cd client
-          rm -rf node_modules package-lock.json
-
       - name: npm install, build, and test
         run: |
-          cd client
           npm install
           npm run build --if-present
           npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./client/dist
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -68,9 +57,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E1583D47A7CF4D1981728C8A6C331414 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1715F677F69641958199704D66F6868A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9689AE85AF8A41DBB4FD65F62BF8BD6C }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F39678BFCAB64EECAB520B65200EA5F5 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FB392B2DC03441169B1FD6E6EBBE7E25 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_581559C257C14EF69A605BB70DDCC755 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -78,5 +67,5 @@ jobs:
         with:
           app-name: 'astro-sustentability-frontend'
           slot-name: 'Production'
-          package: release.zip
+          package: .
           
