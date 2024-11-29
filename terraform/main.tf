@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=3.0.0"
+      version = "=3.90.0 "
     }
   }
 }
@@ -20,47 +20,87 @@ resource "azurerm_resource_group" "rg" {
 }
 
 # Plan de App Service
-resource "azurerm_app_service_plan" "app_service_plan" {
+resource "azurerm_service_plan" "app_service_plan" {
   name                = "astro-app-service-plan"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku {
-    tier = "Free"
-    size = "F1"
-  }
+  os_type             = "Linux"
+  sku_name =  "F1"
+}
+
+# Managed Identity para el Frontend
+resource "azurerm_user_assigned_identity" "frontend_identity" {
+  name                = "astro-frontend-identity"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 }
 
 # App Service para Astro (Frontend)
-resource "azurerm_app_service" "web_app" {
-  name                = "astro-frontend"
+resource "azurerm_linux_web_app" "web_app" {
+  name                = "astro-sustentability-frontend"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
+  service_plan_id     = azurerm_service_plan.app_service_plan.id
 
+  identity {
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.frontend_identity.id]
+  }
   site_config {
-    linux_fx_version = "NODE|20-lts"
+    application_stack {
+      node_version = "20-lts"
+    }
+    always_on = false
   }
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    "WEBSITE_RUN_FROM_PACKAGE" = "0"
+    "WEBSITE_STARTUP_FILE"     = "node dist/server/entry.mjs"
+    "PUBLIC_API_BASE_URL"      = "https://${azurerm_linux_web_app.django_app.default_hostname}"
   }
 }
 
-resource "azurerm_app_service" "django_app" {
-  name                = "django-backend"
+# Managed Identity para el Backend
+resource "azurerm_user_assigned_identity" "backend_identity" {
+  name                = "astro-backend-identity"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
+}
+
+resource "azurerm_linux_web_app" "django_app" {
+  name                = "django-sustentability-backend"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  service_plan_id     = azurerm_service_plan.app_service_plan.id
+
+  identity {
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.backend_identity.id]
+  }
 
   site_config {
-    linux_fx_version = "PYTHON|3.12" 
+    application_stack {
+      python_version = "3.12"
+    }
+    always_on = false
   }
 
   app_settings = {
-    "DJANGO_SETTINGS_MODULE"   = "mi_proyecto.settings"
-    "DATABASE_URL"             = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
-    "WEBSITE_RUN_FROM_PACKAGE" = "1" 
+    "DJANGO_SETTINGS_MODULE" = "blogserver.settings"
+    "DATABASE_URL"           = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name};Database=${azurerm_mssql_database.database.name};User Id=${var.sql_admin_username};Password=${var.sql_admin_password};"
+    "SECRET_KEY"             = var.django_secret_key
+    "DEBUG"                  = var.debug
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    "APPSETTING_WEBSITE_STARTUP_FILE" = "python3 ./server/manage.py runserver 0.0.0.0:8000"
   }
+}
+
+resource "azurerm_sql_firewall_rule" "allow_azure_services" {
+  name                = "AllowAzureServices"
+  server_name         = azurerm_mssql_server.sql_server.name
+  resource_group_name = azurerm_resource_group.rg.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 }
 
 

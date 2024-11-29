@@ -2,10 +2,10 @@
 interface Props {
     title: string;
 }
+
 //import Navegacion from '../components/navegacion.astro';
 
 const { title } = Astro.props;
-
 ---
 
 <!doctype html>
@@ -66,12 +66,17 @@ const { title } = Astro.props;
                             </li>
                         </ul>
                     </div>
+
                 </div>
-            </nav>
-        </header>
+            </div>
+        </nav>
         <slot />
+        <footer class='bg-green-500 flex flex-row items-center justify-center text-white'>
+            Creado en 2024
+        </footer>
     </body>
 </html>
+
 <style is:global>
     :root {
         --accent: 136, 58, 234;
