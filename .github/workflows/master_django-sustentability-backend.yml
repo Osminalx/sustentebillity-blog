@@ -92,4 +92,5 @@ jobs:
 
             - name: Restart the app after deployment
               run: |
-                  az webapp restart --name django-sustentability-backend --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+                  az webapp restart --name django-sustentability-backend --resource-group astro-blog-rg
+
