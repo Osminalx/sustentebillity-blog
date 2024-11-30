@@ -55,7 +55,7 @@ resource "azurerm_linux_web_app" "web_app" {
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = "0"
-    "WEBSITE_STARTUP_FILE"     = "node dist/server/entry.mjs"
+    "WEBSITE_STARTUP_FILE"     = "HOST=0.0.0.0 PORT=8080 node ./home/site/wwwroot/server/entry.mjs"
     "PUBLIC_API_BASE_URL"      = "https://${azurerm_linux_web_app.django_app.default_hostname}"
   }
 }
