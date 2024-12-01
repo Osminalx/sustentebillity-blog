@@ -4,6 +4,14 @@ summary: 'amazona-frentirrojo-habitat'
 author: 'Astro Learner'
 Subititulo: "Población"
 sustit: "Datos divertidos"
+text: "Las amazonas frentirrojas fueron descritas por primera vez en 1758 por Linneo.  
+Existen unas 50 especies diferentes de loros amazonas.  
+Aunque las amazonas frentirrojas tienden a ser vocales, su habilidad para hablar no está muy bien considerada. Dependiendo del individuo, algunas son buenas habladoras mientras que otras sólo alcanzan a pronunciar un par de palabras.  
+Las berenjenas y los aguacates son venenosos para las amazonas de flor roja, al igual que para todos los loros.  
+A un grupo de loros se le llama, entre otras cosas, \"compañía\", \"algarabía\", \"pandemónium\" o \"psitacosis\" de loros.  
+La Amazona frentirroja comerá granos de café.  
+Al parecer, fue Cristóbal Colón quien bautizó con el nombre de \"Amazona\" a un loro verde de alas cortas que trajo de su primer viaje al Nuevo Mundo de vuelta a Europa."
+
 img: 'https://th.bing.com/th/id/OIP.wzWhnTzmsaV-SjVRsvovsQAAAA?rs=1&pid=ImgDetMain'
 slug: 'prueba1'
 ---
