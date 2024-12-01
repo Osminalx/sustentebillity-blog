@@ -40,14 +40,14 @@ existe una diferencia física entre el macho y la hembra.
     </div>
 </div>
 
-### Estilo de vida y comportamiento
+<br>
+
+### **Estilo de vida y comportamiento**
 
 -   **Estilo de vida:** Arborícola, Altricial, Terrestre
 -   **Comportamiento estacional:** No migratorio
 
-### Sonido y canto
-
-**Sonido y canto:**
+**Sonidos y cantos:**
 
 <audio controls>
     <source
